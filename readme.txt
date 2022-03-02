@@ -4,8 +4,8 @@ Donate link: https://www.scottkclark.com/
 Tags: cron, wp_cron, cronjob, cron job, automatic, scheduler
 Requires at least: 4.9
 Requires PHP: 5.6
-Tested up to: 5.7
-Stable tag: 0.4.9
+Tested up to: 5.9
+Stable tag: 0.5.0
 
 Create and Manage Cronjobs in WP by loading Scripts via URLs, including Scripts, running Functions, and/or running PHP code. This plugin utilizes the wp_cron API.
 
@@ -27,7 +27,30 @@ As you receive visitors on your site, WordPress checks your database to see if a
 
 Cronjobs configured on a server run on their intervals automatically, while wp_cron() jobs run only after being triggered from a visitor to your site.
 
+== Installation ==
+
+1. Unpack the entire contents of this plugin zip file into your `wp-content/plugins/` folder locally
+1. Upload to your site
+1. Navigate to `wp-admin/plugins.php` on your site (your WP plugin page)
+1. Activate this plugin
+
+OR you can just install it with WordPress by going to Plugins >> Add New >> and type this plugin's name
+
+== Features ==
+
+= Administration =
+* Create and Manage Custom Cronjobs
+* View Custom Cronjob Activity Log
+* View and Remove Existing Cronjobs
+* View Available Cronjob Schedules and Intervals
+* Reset Logs or all Crony settings
+* Admin.Class.php - A class for plugins to manage data using the WordPress UI appearance
+
 == Changelog ==
+
+= 0.5.0 =
+* Fixed issue with the Start On and Next Run On datetime fields showing the current saved value in certain browsers.
+* Updated compatibility with WP 5.9 and PHP 8.0
 
 = 0.4.9 =
 * Now requires PHP 5.6+ and WordPress 4.9+
@@ -98,35 +121,3 @@ Cronjobs configured on a server run on their intervals automatically, while wp_c
 
 = 0.1 =
 * First official release to the public as a plugin
-
-== Installation ==
-
-1. Unpack the entire contents of this plugin zip file into your `wp-content/plugins/` folder locally
-1. Upload to your site
-1. Navigate to `wp-admin/plugins.php` on your site (your WP plugin page)
-1. Activate this plugin
-
-OR you can just install it with WordPress by going to Plugins >> Add New >> and type this plugin's name
-
-== Official Support ==
-
-Crony Cronjob Manager - Support Forums: http://scottkclark.com/forums/crony-cronjob-manager/
-
-== About the Plugin Author ==
-
-Scott Kingsley Clark from SKC Development -- Scott specializes in WordPress and Pods CMS Framework development using PHP, MySQL, and AJAX. Scott is also a developer on the Pods CMS Framework plugin
-
-== Features ==
-
-= Administration =
-* Create and Manage Custom Cronjobs
-* View Custom Cronjob Activity Log
-* View and Remove Existing Cronjobs
-* View Available Cronjob Schedules and Intervals
-* Reset Logs or all Crony settings
-* Admin.Class.php - A class for plugins to manage data using the WordPress UI appearance
-
-== Roadmap ==
-
-= 0.5.0 =
-* Test a Job by running the script via iframe

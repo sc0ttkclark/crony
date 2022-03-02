@@ -56,7 +56,7 @@ if ( isset( $_GET['exports_and_reports_download'] ) && isset( $_GET['_wpnonce'] 
  *
  * @package Admin UI for Plugins
  *
- * @version 1.11.5
+ * @version 1.11.6
  * @author  Scott Kingsley Clark
  * @link    https://www.scottkclark.com/
  *
@@ -881,7 +881,7 @@ class WP_Admin_UI {
 								$html_input_type = 'datetime-local';
 							}
 							?>
-							<input type="<?php echo esc_attr( $html_input_type ); ?>" name="<?php echo esc_attr( $column ); ?>" id="admin_ui_<?php echo esc_attr( $column ); ?>" value="<?php echo esc_attr( $this->row[ $column ] ); ?>" />
+							<input type="<?php echo esc_attr( $html_input_type ); ?>" name="<?php echo esc_attr( $column ); ?>" id="admin_ui_<?php echo esc_attr( $column ); ?>" value="<?php echo esc_attr( str_replace( ' ', 'T', $this->row[ $column ] ) ); ?>" />
 							<?php
 						} elseif ( 'related' === $attributes['type'] && false !== $attributes['related'] ) {
 							if ( ! is_array( $attributes['related'] ) ) {
@@ -1728,7 +1728,7 @@ class WP_Admin_UI {
 		}
 		$sql       = preg_replace( '/ SELECT /i', " SELECT {$calc_found_sql} ", preg_replace( '/ SELECT SQL_CALC_FOUND_ROWS /i', ' SELECT ', $sql, 1 ), 1 );
 		$wheresql  = $havingsql = $ordersql = $limitsql = '';
-		$other_sql = $having_sql = $replace_varibles = array();
+		$other_sql = $having_sql = $replace_variables = array();
 		if ( $full || false !== $this->sql_count ) {
 			preg_match( '/SELECT (.*) FROM/i', $sql, $selectmatches );
 		} else {
@@ -1787,7 +1787,7 @@ class WP_Admin_UI {
 				if ( ! empty( $other_sql ) ) {
 					foreach ( $other_sql as $key => $value ) {
 						if ( false !== stripos( $sql, '%%' . $key . '%%' ) ) {
-							$replace_varibles[ $key ] = $value;
+							$replace_variables[ $key ] = $value;
 
 							unset( $other_sql[ $key ] );
 						}
@@ -1799,7 +1799,7 @@ class WP_Admin_UI {
 				if ( ! empty( $having_sql ) ) {
 					foreach ( $having_sql as $key => $value ) {
 						if ( false !== stripos( $sql, '%%' . $key . '%%' ) ) {
-							$replace_varibles[ $key ] = $value;
+							$replace_variables[ $key ] = $value;
 
 							unset( $having_sql[ $key ] );
 						}
@@ -1889,7 +1889,7 @@ class WP_Admin_UI {
 			if ( ! empty( $other_sql ) ) {
 				foreach ( $other_sql as $key => $value ) {
 					if ( false !== stripos( $sql, '%%' . $key . '%%' ) ) {
-						$replace_varibles[ $key ] = $value;
+						$replace_variables[ $key ] = $value;
 
 						unset( $other_sql[ $key ] );
 					}
@@ -1907,7 +1907,7 @@ class WP_Admin_UI {
 			if ( ! empty( $having_sql ) ) {
 				foreach ( $having_sql as $key => $value ) {
 					if ( false !== stripos( $sql, '%%' . $key . '%%' ) ) {
-						$replace_varibles[ $key ] = $value;
+						$replace_variables[ $key ] = $value;
 
 						unset( $having_sql[ $key ] );
 					}
@@ -1984,7 +1984,7 @@ class WP_Admin_UI {
 		} elseif ( stripos( $sql, '%%LIMIT%%' ) === false ) {
 			$sql = str_replace( ' LIMIT ', ' LIMIT %%LIMIT%% ', $sql );
 		}
-		foreach ( $replace_varibles as $k => $v ) {
+		foreach ( $replace_variables as $k => $v ) {
 			$sql = str_ireplace( '%%' . $k . '%%', $v, $sql );
 		}
 		$sql = str_replace( '%%WHERE%%', $wheresql, $sql );
@@ -1995,7 +1995,7 @@ class WP_Admin_UI {
 		$sql = str_replace( '  ', ' ', $sql );
 		if ( false !== $this->sql_count ) {
 			$wheresql       = $havingsql = $ordersql = $limitsql = '';
-			$sql_count      = ' ' . str_replace( array( "\n", "\r", '  ' ), ' ', ' ' . $this->sql_count ) . ' ';
+			$sql_count      = ' ' . preg_replace( '/\s+/', ' ', ' ' . $this->sql_count ) . ' ';
 			$calc_found_sql = 'SQL_CALC_FOUND_ROWS';
 			if ( $full || false !== $this->sql_count ) {
 				$calc_found_sql = '';
